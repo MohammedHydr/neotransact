@@ -38,7 +38,7 @@ def generate_clients(num_clients):
         date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=80)
         account_open_date = fake.date_between(start_date=date_of_birth + timedelta(days=6570))  # >dob
         country = fake.country()
-        status = random.choices(["active", "inactive", "suspended"], weights=[85, 10, 5], k=1)[0]
+        # status = random.choices(["active", "inactive", "suspended"], weights=[85, 10, 5], k=1)[0]
         phone_number = fake.phone_number()
         address = fake.address()
         # risk_tolerance = random.choice(["low", "medium", "high"])
@@ -53,7 +53,6 @@ def generate_clients(num_clients):
             "account_type": account_type,
             "account_balance": account_balance,
             "account_open_date": account_open_date,
-            "status": status,
             "phone_number": phone_number,
             "address": address,
             "risk_tolerance": risk_tolerance,

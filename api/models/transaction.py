@@ -13,13 +13,18 @@ class Transaction(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     currency = models.CharField(max_length=3)
-    transaction_status = models.CharField(max_length=50, choices=[("completed", "Completed"), ("pending", "Pending"),
-                                                                  ("failed", "Failed")])
+    transaction_status = models.CharField(max_length=50, choices=[("completed", "Completed"), ("failed", "Failed")])
+    # to be generated in transformation
     transaction_channel = models.CharField(max_length=50,
                                            choices=[("online", "Online"), ("branch", "Branch"), ("ATM", "ATM")])
 
     class Meta:
         db_table = "transactions"
+        indexes = [
+            models.Index(fields=["client", "transaction_date"], name="client_date_idx"),
+            models.Index(fields=["transaction_status"], name="transaction_status_idx")
+        ]
+        managed = False  # Let PostgreSQL handle partitions
 
     def __str__(self):
         return f"{self.transaction_type} - {self.amount} {self.currency}"  # print badel l object

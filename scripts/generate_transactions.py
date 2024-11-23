@@ -33,7 +33,7 @@ def generate_transactions(num_transactions):
             shares = random.randint(10, 500)
 
         # account_creation_date < transaction_date < today
-        account_creation_date = datetime.strptime(client["account_open_date"], "%Y-%m-%d")
+        account_creation_date = datetime.strptime('2023-01-01', "%Y-%m-%d")
         transaction_date = fake.date_time_between_dates(datetime_start=account_creation_date,
                                                         datetime_end=datetime.today())
         transaction_date = transaction_date.replace(tzinfo=None)
@@ -46,7 +46,7 @@ def generate_transactions(num_transactions):
         if transaction_type == "sell":
             amount = -amount  # sell => -ve
         currency = random.choice(["USD", "EUR", "GBP"])
-        transaction_status = random.choice(["completed", "pending", "failed"])
+        # transaction_status = random.choice(["completed", "pending", "failed"]) # to be set in transformation step
         transaction_channel = random.choice(["online", "branch", "ATM"])
 
         transactions.append({
@@ -60,7 +60,6 @@ def generate_transactions(num_transactions):
             "price": price,
             "amount": amount,
             "currency": currency,
-            "transaction_status": transaction_status,
             "transaction_channel": transaction_channel
         })
     return pd.DataFrame(transactions)
