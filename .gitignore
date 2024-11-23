@@ -1,3 +1,5 @@
+# .gitignore # comment to show in repo
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -122,7 +124,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+#.env # comment to push to repo to show in the submit
 .venv
 env/
 venv/
