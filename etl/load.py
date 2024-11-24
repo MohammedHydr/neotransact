@@ -1,3 +1,4 @@
+from django.core.management import call_command
 from django.db import transaction
 
 
@@ -18,5 +19,7 @@ class Loader:
                     if batch:
                         batch[0].__class__.objects.bulk_create(batch, batch_size=batch_size)
                 print("SAVED " + str(len(model_instances)) + " records.")
+                call_command("refresh_materialized_view")
+                print("Materialized view refreshed after batch load.")
         except Exception as e:
             raise Exception("Error loading data: " + str(e))

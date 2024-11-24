@@ -1,9 +1,12 @@
 from django.core.management.base import BaseCommand
+from django.utils.timezone import now
+
 from etl.extract import Extractor
 from etl.transform import Transformer
 from etl.load import Loader
 from tests import test_extract, test_transform, test_load, test_utils
 from etl.utils import log_info, log_error
+from api.models.etl_job import ETLJob
 
 
 class Command(BaseCommand):
@@ -32,6 +35,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        # Create a new ETL job entry
+        job = ETLJob.objects.create(job_name="ETL Pipeline", status="running", start_time=now())
+
         """
         Run tests first. If tests pass, run the ETL process.
         """
@@ -79,8 +85,21 @@ class Command(BaseCommand):
             if process_transactions:
                 loader.load_data(all_transactions, batch_size=batch_size)
 
+                # Mark job as successful
+                job.status = "success"
+                job.end_time = now()
+                job.duration = job.end_time - job.start_time
+                job.save()
+
             log_info("ETL process completed successfully.")
 
         except Exception as e:
+            # Mark job as failed
+            job.status = "failed"
+            job.end_time = now()
+            job.duration = job.end_time - job.start_time
+            job.error_message = str(e)
+            job.save()
+
             log_error("ETL process failed: " + str(e))
             raise
