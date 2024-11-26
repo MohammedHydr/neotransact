@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 t.client_id,
                 COUNT(*) AS total_transactions,
                 SUM(CASE WHEN t.transaction_type = 'buy' THEN t.amount ELSE 0 END) AS total_spent,
-                SUM(CASE WHEN t.transaction_type = 'sell' THEN ABS(t.amount) ELSE 0 END) AS total_gained,
+                SUM(CASE WHEN t.transaction_type = 'sell' THEN ABS(t.amount) ELSE 0 END) AS total_gained
             FROM 
                 transactions t
             GROUP BY 

@@ -33,10 +33,9 @@ def generate_transactions(num_transactions):
             shares = random.randint(10, 500)
 
         # account_creation_date < transaction_date < today
-        account_creation_date = datetime.strptime('2023-01-01', "%Y-%m-%d")
-        transaction_date = fake.date_time_between_dates(datetime_start=account_creation_date,
-                                                        datetime_end=datetime.today())
-        transaction_date = transaction_date.replace(tzinfo=None)
+        account_creation_date = datetime.strptime('2023-01-01', "%Y-%m-%d").date()
+        transaction_date = fake.date_between_dates(date_start=account_creation_date, date_end=datetime.today().date())
+
         stock = random.choice(STOCKS)
         # shares = random.randint(1, 100)
         # price = round(random.uniform(10, 1500), 2)
