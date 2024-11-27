@@ -21,7 +21,12 @@ from api.serializers import TransactionSerializer
 @method_decorator(ratelimit(key='user', rate='10/m', block=True), name='dispatch')
 class TransactionView(APIView):
     """
-    API Endpoint to fetch transactions for a specific client with optional date range filtering.
+    Handles API requests to fetch transactions for a specific client.
+    Features:
+        - Fetches transactions by client ID.
+        - Supports optional date range filtering (start_date, end_date).
+        - Implements rate-limiting to prevent abuse.
+        - Secures the endpoint with JWT authentication.
     """
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]

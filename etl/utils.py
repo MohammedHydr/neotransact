@@ -18,6 +18,9 @@ def log_error(message):
 
 
 def convert_currency(amount, from_currency, to_currency, fixed_rates=FIXED_CURRENCY_RATES):
+    """
+    Convert currency based on fixed rates.
+    """
     if from_currency == to_currency:
         return round(amount, 2)
 

@@ -4,10 +4,27 @@ from api.models import Transaction, Client
 from etl.base import ETLBase
 from etl.constants import CLIENTS_FILE, TRANSACTIONS_FILE
 
+"""
+   Extractor class responsible for extracting data from input files and preparing it for transformations.
+   It extracts:
+   - Client data from a CSV file.
+   - Transaction data from an XLSX file while resolving references to in-memory Client objects.
+"""
+
 
 class Extractor(ETLBase):
+    """
+    Extractor class responsible for extracting data from input files and preparing it for transformations.
+    It extracts:
+       - Client data from a CSV file.
+       - Transaction data from an XLSX file while resolving references to in-memory Client objects.
+    """
+
     @staticmethod
     def extract_clients(clients_file=CLIENTS_FILE):
+        """
+        Extract client data from a CSV file and convert it into a list of Client objects.
+        """
         try:
             data = pd.read_csv(clients_file)
             clients = [

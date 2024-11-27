@@ -54,12 +54,6 @@ class Transformer:
     def group_transactions_by_client(self, transactions):
         """
         Groups transactions by their client's ID.
-
-        Args:
-            transactions (list): List of Transaction objects.
-
-        Returns:
-            dict: Dictionary where the keys are client IDs and the values are lists of transactions.
         """
         grouped = {}
         for transaction in transactions:
@@ -72,8 +66,6 @@ class Transformer:
     def process_client_transactions(self, client, transactions):
         """
         Processes all transactions for a single client.
-
-        If the client's account is suspended, skips all further transactions.
         """
         log_info(f"Processing transactions for client: {client.name} ({client.client_id})")
 
@@ -104,14 +96,9 @@ class Transformer:
     def handle_buy_transaction(self, client, transaction):
         """
         Processes a 'buy' transaction.
-
         - Deducts as much as possible from the balance.
         - Adds remaining amount as debt.
         - Suspends the account if the balance and debt cannot cover the transaction.
-
-        Args:
-            client (Client): The client making the purchase.
-            transaction (Transaction): The buy transaction being processed.
         """
         if client.account_balance >= transaction.amount:
             # Sufficient balance; deduct and mark as successful
@@ -135,14 +122,9 @@ class Transformer:
     def handle_sell_transaction(self, client, transaction):
         """
         Processes a 'sell' transaction.
-
         - Adds the transaction amount to the client's balance.
         - Reduces debt if present.
         - Reactivates the account if debt is cleared.
-
-        Args:
-            client (Client): The client making the sale.
-            transaction (Transaction): The sell transaction being processed.
         """
         client.account_balance += transaction.amount
 

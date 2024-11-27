@@ -9,133 +9,111 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+
 import os
 from datetime import timedelta
 from pathlib import Path
 import environ
 
+# Load environment variables
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False)  # Set default value for DEBUG
 )
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Load environment variables from .env file
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DJANGO_DEBUG")
-
-ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(",")
+# Security settings
+SECRET_KEY = env("DJANGO_SECRET_KEY")  # Secret key for the application
+DEBUG = env("DJANGO_DEBUG")  # Debug mode, should be False in production
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(",")  # List of allowed hosts, separated by commas
 
 # Application definition
-
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'api',  # registering my app
-    'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
+    'django.contrib.admin',  # Admin panel
+    'django.contrib.auth',  # Authentication
+    'django.contrib.contenttypes',  # Content types framework
+    'django.contrib.sessions',  # Session management
+    'django.contrib.messages',  # Messaging framework
+    'django.contrib.staticfiles',  # Static files management
+    'api',  # Custom application for API logic
+    'rest_framework',  # Django REST Framework
+    'rest_framework_simplejwt.token_blacklist',  # JWT token blacklisting
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_ratelimit.middleware.RatelimitMiddleware',
+    'django.middleware.security.SecurityMiddleware',  # Security-related middleware
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Manages sessions
+    'django.middleware.common.CommonMiddleware',  # Common HTTP middleware
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF protection
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Authentication middleware
+    'django.contrib.messages.middleware.MessageMiddleware',  # Messaging middleware
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Clickjacking protection
+    'django_ratelimit.middleware.RatelimitMiddleware',  # Rate-limiting middleware
 ]
 
+# Root URL configuration
 ROOT_URLCONF = 'config.urls'
 
+# Template settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # Directories to search for templates
+        'APP_DIRS': True,  # Automatically search app directories for templates
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',  # Debug context processor
+                'django.template.context_processors.request',  # Request context processor
+                'django.contrib.auth.context_processors.auth',  # Authentication context processor
+                'django.contrib.messages.context_processors.messages',  # Messaging context processor
             ],
         },
     },
 ]
 
+# WSGI application
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# Database configuration
+# Database configuration (PostgreSQL)
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+        "ENGINE": "django.db.backends.postgresql",  # PostgreSQL database engine
+        "NAME": env("DB_NAME"),  # Database name
+        "USER": env("DB_USER"),  # Database user
+        "PASSWORD": env("DB_PASSWORD"),  # Database password
+        "HOST": env("DB_HOST"),  # Database host
+        "PORT": env("DB_PORT"),  # Database port
     }
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Rate-limiting configuration
 RATELIMIT_ENABLE = True
 RATELIMIT_VIEW = 'api.views.rate_limit_exceeded_view'
 RATELIMIT_EXCEPTION_CLASS = 'django_ratelimit.exceptions.Ratelimited'
 
+# Django REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -153,15 +131,16 @@ REST_FRAMEWORK = {
     },
 }
 
+# Simple JWT configuration
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,  # Rotates refresh token upon use
-    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist the old token after rotation
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Token expires after 5 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Refresh token expires after 1 day
+    'ROTATE_REFRESH_TOKENS': True,  # Enable token rotation
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist old tokens after rotation
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Authentication header type
 }
 
-
+# Logging configuration (commented for production-ready systems)
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,

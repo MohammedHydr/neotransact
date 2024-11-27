@@ -14,6 +14,14 @@ from api.models.client import Client
 # Register your models here.
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
+    """
+    Manages Client objects in the Django Admin interface.
+
+    Features:
+        - Displays key fields (e.g., client_id, name, status).
+        - Allows filtering by account type and status.
+        - Supports search by client ID, name, or email.
+    """
     list_display = (
         "client_id",
         "name",
@@ -29,6 +37,15 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
+    """
+    Manages Transaction objects in the Django Admin interface.
+
+    Features:
+        - Displays key fields (e.g., transaction_id, type, status).
+        - Allows filtering by type, status, and currency.
+        - Supports search by transaction ID or client name.
+    """
+
     list_display = (
         "transaction_id",
         "client",
@@ -43,6 +60,14 @@ class TransactionAdmin(admin.ModelAdmin):
 
 @admin.register(ETLJob)
 class ETLJobAdmin(admin.ModelAdmin):
+    """
+    Manages ETL jobs in the Django Admin interface.
+    Features:
+        - Displays job metadata (e.g., status, start/end times).
+        - Includes a button to manually trigger the ETL process.
+        - Supports filtering by job status and search by name.
+    """
+
     list_display = ("job_name", "status", "start_time", "end_time", "duration", "trigger_etl")
     list_filter = ("status",)
     search_fields = ("job_name", "error_message")
@@ -75,5 +100,11 @@ class ETLJobAdmin(admin.ModelAdmin):
 
 @admin.register(ClientTransactionSummary)
 class ClientTransactionSummaryAdmin(admin.ModelAdmin):
+    """
+    Displays summarized transaction statistics for each client for the MaterializedView.
+    Features:
+        - Displays total transactions, spent amount, and gained amount.
+        - Supports search by client ID.
+    """
     list_display = ("client_id", "total_transactions", "total_spent", "total_gained")
     search_fields = ("client_id",)

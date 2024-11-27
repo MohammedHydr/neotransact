@@ -16,3 +16,10 @@ urlpatterns = [
     path('token/logout/', TokenBlacklistView.as_view(), name='token_blacklist'),
     # path("debug/", DebugHeadersView.as_view(), name="debug-headers"),
 ]
+
+"""
+- /transactions/<client_id>/:
+    Fetches transactions for a specific client.
+- /token/, /token/refresh/, /token/verify/, /token/logout/:
+    Handles JWT authentication workflows.
+"""
