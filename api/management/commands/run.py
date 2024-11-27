@@ -10,6 +10,24 @@ from api.models.etl_job import ETLJob
 
 
 class Command(BaseCommand):
+    """
+        Custom Django management command to run the ETL pipeline.
+
+        Features:
+        - Runs tests for ETL components (extract, transform, load) before execution.
+        - Extracts, transforms, and loads client and transaction data into the database.
+        - Allows partial processing using optional arguments (clients-only or transactions-only).
+        - Logs the ETL job's progress and status in the database.
+
+        Usage:
+            python manage.py run_etl [--clients-only] [--transactions-only] [--batch-size=<size>]
+
+        Optional Arguments:
+        - `--clients-only`: Processes only client data, skipping transactions.
+        - `--transactions-only`: Processes only transaction data, skipping clients.
+        - `--batch-size`: Defines the batch size for database loading (default: 1000).
+    """
+
     help = ("Run tests before the ETL pipeline. If tests pass Run the ETL process to extract, transform, "
             "and load client and transaction data.")
 
@@ -35,6 +53,14 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        """
+            Runs the ETL pipeline with the specified options:
+            1. Run all unit tests to ensure the ETL components are functioning correctly.
+            2. Extract data from source files (CSV and XLSX).
+            3. Transform data (grouping, sorting, and balance updates).
+            4. Load data into the database in batches.
+            5. Logs success or failure in the ETLJob model.
+        """
         # Create a new ETL job entry
         job = ETLJob.objects.create(job_name="ETL Pipeline", status="running", start_time=now())
 
